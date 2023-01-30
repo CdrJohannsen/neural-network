@@ -9,19 +9,20 @@ class NN:
             self.generateLinks(784,16),
             self.generateLinks(16,16),
             self.generateLinks(16,10)]
+        self.layers=[]
         self.layers=[
-            self.generateNodes(784),
-            self.generateNodes(16),
-            self.generateNodes(16),
-            self.generateNodes(10)
+            self.generateNodes(784,0),
+            self.generateNodes(16,1),
+            self.generateNodes(16,2),
+            self.generateNodes(10,3)
         ]
         self.data = openData()
         self.test(next(self.data))
 
-    def generateNodes(self,count):
+    def generateNodes(self,count,index):
         nodes = []
         for a in range(count):
-            nodes.append(Node(bias=random.randint(1,10),index=a,links=self.links))
+            nodes.append(Node(bias=random.randint(1,10),index=(index,a),links=self.links,layers=self.layers))
         return nodes
     
     def generateLinks(self,inN,outN):
