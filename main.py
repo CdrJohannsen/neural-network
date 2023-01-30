@@ -1,16 +1,28 @@
 #!/usr/bin/env python
+import random
 from node import Node
+from dataImport import *
 
-def main():
-    pass
+class NN:
+    def __init__(self):
+        self.inLayer = self.generateNodes(784)
+        self.hLayer = self.generateNodes(16)
+        self.hLayer2 = self.generateNodes(16)
+        self.data = openData()
 
+    def generateNodes(self,count):
+        nodes = []
+        for a in range(count):
+            nodes.append(Node(bias=random.randint(1,10)))
+        return nodes
 
-def generateNodes()
-
+    def learn(self):
+        pass
 
 
 
 
 
 if __name__ == "__main__":
-    main()
+    net = NN()
+    net.learn()
