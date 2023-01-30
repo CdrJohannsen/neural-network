@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from node import Node
 
 def main():
     pass
