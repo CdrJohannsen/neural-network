@@ -8,8 +8,9 @@ class Node():
         self.layers=layers
     
     def calcSigmoid(self,x)
-        1/(1+pow(math.e,-x))
+        return 1/(1+pow(math.e,-x)
         
+    def 
     
     def test(self,value):
         pass
