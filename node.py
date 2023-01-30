@@ -1,3 +1,4 @@
+import math
 
 class Node():
     def __init__(self,bias,index,links,layers):
@@ -5,6 +6,10 @@ class Node():
         self.bias=bias
         self.links=links
         self.layers=layers
-
+    
+    def calc_sigmoid(self,x)
+        1/(1+pow(math.e,-x))
+        
+    
     def test(self,value):
         pass
