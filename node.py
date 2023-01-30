@@ -4,3 +4,6 @@ class Node():
         self.index=index
         self.bias=bias
         self.links=links
+
+    def test(self,value):
+        pass

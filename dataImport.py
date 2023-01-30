@@ -11,5 +11,5 @@ def openData():
         magic, size = struct.unpack(">II", f.read(8))
         labels = np.fromfile(f, dtype=np.dtype(np.uint8).newbyteorder('>'))
         labels = labels.reshape((size,))
-    for i in range(0,len(labels)):
-        yield labels[i], images[i]
+    for i in range(len(labels)):
+        yield (labels[i], images[i])

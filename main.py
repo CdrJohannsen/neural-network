@@ -14,6 +14,7 @@ class NN:
         self.hLayer2 = self.generateNodes(16)
         self.oLayer = self.generateNodes(10)
         self.data = openData()
+        self.test(next(self.data))
 
     def generateNodes(self,count):
         nodes = []
@@ -30,6 +31,16 @@ class NN:
             col.append(row)
         return col
 
+    def test(self,dataset):
+        label, image = dataset
+        print(label)
+        i=0
+        for row in image:
+            print(row)
+            for data in row:
+                self.inLayer[i].test(data)
+                i+=1
+
     def learn(self):
         pass
 
@@ -39,4 +50,3 @@ class NN:
 
 if __name__ == "__main__":
     net = NN()
-    net.learn()
