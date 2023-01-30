@@ -9,10 +9,12 @@ class NN:
             self.generateLinks(784,16),
             self.generateLinks(16,16),
             self.generateLinks(16,10)]
-        self.inLayer = self.generateNodes(784)
-        self.hLayer = self.generateNodes(16)
-        self.hLayer2 = self.generateNodes(16)
-        self.oLayer = self.generateNodes(10)
+        self.layers=[
+            self.generateNodes(784),
+            self.generateNodes(16),
+            self.generateNodes(16),
+            self.generateNodes(10)
+        ]
         self.data = openData()
         self.test(next(self.data))
 
@@ -38,7 +40,7 @@ class NN:
         for row in image:
             print(row)
             for data in row:
-                self.inLayer[i].test(data)
+                self.layers[0][i].test(data)
                 i+=1
 
     def learn(self):
