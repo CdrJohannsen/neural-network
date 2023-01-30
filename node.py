@@ -7,7 +7,7 @@ class Node():
         self.links=links
         self.layers=layers
     
-    def calc_sigmoid(self,x)
+    def calcSigmoid(self,x)
         1/(1+pow(math.e,-x))
         
     
