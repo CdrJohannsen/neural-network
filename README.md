@@ -1,2 +1,2 @@
 # neural-network
-Trying to make a font-detection AI
+Trying to make a number-detection AI
