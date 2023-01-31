@@ -18,7 +18,7 @@ class NN:
         self.layers.append(self.generateNodes(10,3))
         self.deliverLayers()
         self.data = openData()
-        self.test(next(self.data))
+        self.analyze(next(self.data))
 
     def generateNodes(self,count,index):
         # generate a list of nodes of length <count> with index <index>
@@ -37,18 +37,20 @@ class NN:
             col.append(row)
         return col
 
-    def test(self,dataset):
+    def analyze(self,dataset):
         label, image = dataset
         print(label)
         i=0
         for row in image:
             print(row)
             for data in row:
-                self.layers[0][i].test(data)
+                self.layers[0][i].analyze(data)
                 i+=1
         for layer in self.layers:
+            results = []
             for node in layer:
-                node.propagate()
+                results.append(node.propagate())
+        print(results)
 
     def deliverLayers(self):
         for layer in self.layers:

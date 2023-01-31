@@ -11,17 +11,16 @@ class Node():
         # calculate the sigmoid
         return 1/(1+pow(math.e,-x))
         
-    def test(self,value):
+    def analyze(self,value):
         self.values.append(value)
 
     def propagate(self):
         # gives values to the next layer
         value = self.calcValue()
         if self.index[0]==3:
-            print(self.index[1],': ',value)
-            return
+            return value
         for i in range(len(self.nextL)):
-            self.nextL[i].test(value*self.links[self.index[0]][self.index[1]][i])
+            self.nextL[i].analyze(value*self.links[self.index[0]][self.index[1]][i])
 
     def calcValue(self):
         # calculate value
