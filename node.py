@@ -26,5 +26,5 @@ class Node():
             self.nextL[i].test(value*self.links[self.index[0]][self.index[1]][i])
 
     def calcValue(self):
-        # calculate sigmoid out of self.values and the bias
-        pass
+        # calculate value
+        return self.calcSigmoid(sum(self.values)+bias)
