@@ -18,13 +18,13 @@ class NN:
         self.layers.append(self.generateNodes(10,3))
         self.deliverLayers()
         self.data = openData()
-        self.analyze(next(self.data))
+        self.learn(next(self.data))
 
     def generateNodes(self,count,index):
         # generate a list of nodes of length <count> with index <index>
         nodes = []
         for a in range(count):
-            nodes.append(Node(bias=random.randint(1,10),index=(index,a),links=self.links))
+            nodes.append(Node(bias=random.randint((-10),10),index=(index,a),links=self.links))
         return nodes
     
     def generateLinks(self,inN,outN):
@@ -37,9 +37,7 @@ class NN:
             col.append(row)
         return col
 
-    def analyze(self,dataset):
-        label, image = dataset
-        print(label)
+    def analyze(self,image):
         i=0
         for row in image:
             print(row)
@@ -51,14 +49,33 @@ class NN:
             for node in layer:
                 results.append(node.propagate())
         print(results)
+        return results
 
     def deliverLayers(self):
         for layer in self.layers:
             for node in layer:
                 node.setLayers(self.layers)
 
-    def learn(self):
-        pass
+    def learn(self, dataset):
+        label, image = dataset
+        res= self.analyze(image)
+        wres=self.getWantedResults(label)
+        self.cost=self.getCost(res,wres)
+        print(self.cost)
+
+    def getWantedResults(self,label):
+        wanted_results=[]
+        for i in range(10):
+            wanted_results.append(0.0)
+        wanted_results[label-1]=1.0
+        return wanted_results
+
+    def getCost(self,res,wres):
+        cost = 0.0
+        for i in range(len(res)):
+            cost += pow(res[i]-wres[i],2)
+        return cost
+
 
 if __name__ == "__main__":
     net = NN()
