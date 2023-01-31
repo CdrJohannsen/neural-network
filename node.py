@@ -13,12 +13,14 @@ class Node():
             self.nextL=layers[self.index[0]+1]
     
     def calcSigmoid(self,x):
+        # calculate the sigmoid
         return 1/(1+pow(math.e,-x)
         
     def test(self,value):
         self.values.append(value)
 
     def propagate(self):
+        # gives values to the next layer
         value = self.calcValue()
         if self.index[0]==3:
             print(self.index[1],': ',value)
