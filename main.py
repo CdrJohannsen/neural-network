@@ -12,12 +12,11 @@ class NN:
             self.generateLinks(16,10)]
         # generate nodes
         self.layers=[]
-        self.layers=[
-            self.generateNodes(784,0),
-            self.generateNodes(16,1),
-            self.generateNodes(16,2),
-            self.generateNodes(10,3)
-        ]
+        self.layers.append(self.generateNodes(784,0))
+        self.layers.append(self.generateNodes(16,1))
+        self.layers.append(self.generateNodes(16,2))
+        self.layers.append(self.generateNodes(10,3))
+        self.deliverLayers()
         self.data = openData()
         self.test(next(self.data))
 
@@ -25,7 +24,7 @@ class NN:
         # generate a list of nodes of length <count> with index <index>
         nodes = []
         for a in range(count):
-            nodes.append(Node(bias=random.randint(1,10),index=(index,a),links=self.links,layers=self.layers))
+            nodes.append(Node(bias=random.randint(1,10),index=(index,a),links=self.links))
         return nodes
     
     def generateLinks(self,inN,outN):
@@ -47,13 +46,17 @@ class NN:
             for data in row:
                 self.layers[0][i].test(data)
                 i+=1
+        for layer in self.layers:
+            for node in layer:
+                node.propagate()
+
+    def deliverLayers(self):
+        for layer in self.layers:
+            for node in layer:
+                node.setLayers(self.layers)
 
     def learn(self):
         pass
-
-
-
-
 
 if __name__ == "__main__":
     net = NN()
