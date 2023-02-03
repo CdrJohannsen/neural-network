@@ -1,9 +1,9 @@
 import math
 
 class Node():
-    def __init__(self,bias,index,links):
+    def __init__(self,biases,index,links):
         self.index=index
-        self.bias=bias
+        self.biases=biases
         self.links=links
         self.values=[]
     
@@ -24,7 +24,7 @@ class Node():
 
     def calcValue(self):
         # calculate value
-        return self.calcSigmoid(sum(self.values)+self.bias)
+        return self.calcSigmoid(sum(self.values)+self.biases[self.index[0]][self.index[1]])
 
     def setLayers(self,layers):
         self.layers=layers
