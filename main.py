@@ -74,9 +74,12 @@ class NN:
         label, image = dataset
         res= self.analyze(image)
         wres=self.getWantedResults(label)
-        self.cost=self.getCost(res,wres)
+        cost=self.getCost(res,wres)
         print(self.highestResult(res))
-        print(self.cost)
+        print(cost)
+        for layer in list(reversed(self.layers)):
+            for node in layer:
+                node.learn(cost)
 
     def highestResult(self,results:list):
         # return the index of the highest number in <results>

@@ -32,3 +32,14 @@ class Node():
             self.prevL=self.layers[self.index[0]-1]
         if self.index[0] != 3:
             self.nextL=self.layers[self.index[0]+1]
+
+    def learn(self,cost):
+        changes=[]
+        for i in range(len(self.nextL)):
+            canges.append(self.calcChanges(self.nextL[i]))
+        self.baseChange=sum(changes)/len(changes)
+        # change bias and weight
+        
+
+    def calcChanges(self,nextNode):
+        pass
