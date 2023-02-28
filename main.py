@@ -75,13 +75,13 @@ class NN:
         # analyze an image and learn
         label, image = dataset
         res= self.analyze(image)
-        print(res)
         wres=self.getWantedResults(label)
         self.layers[4]=list(wres)
         self.deliverLayers()
         cost=self.getCost(res,wres)
-        print(self.highestResult(res))
-        print(cost)
+        print(f'Label: {label}')
+        print(f'Result: {self.highestResult(res)}')
+        print(f'Cost: {cost}')
         for layer in list(reversed(self.layers)):
             for node in layer:
                 node.learn(cost)
@@ -123,4 +123,5 @@ class NN:
 
 
 if __name__ == "__main__":
-    net = NN()
+    for g in range(100):
+        net = NN()

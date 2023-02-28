@@ -1,6 +1,7 @@
 class DNode():
     def __init__(self):
         self.value=0.0
+        self.baseChange=0.0
         
     def analyze(self,value):
         pass
@@ -21,3 +22,4 @@ class DNode():
 
     def setValue(self,value):
         self.value=value
+        self.baseChange=value

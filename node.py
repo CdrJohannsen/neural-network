@@ -38,12 +38,16 @@ class Node():
         for i in range(len(self.nextL)-1):
             changes.append(self.calcChanges(self.nextL[i]))
         self.baseChange=sum(i[0] for i in changes)/len(changes)
-        print(self.baseChange)
+        self.biases[self.index[0]][self.index[1]]+=self.biases[self.index[0]][self.index[1]]*self.baseChange
+        if self.index[0]==3:
+            return
+        for i in range(len(self.nextL)-1):
+            self.links[self.index[0]][self.index[1]][i]+=self.links[self.index[0]][self.index[1]][i]*self.baseChange*changes[i][1]
         # change bias and weight
         
 
     def calcChanges(self,nextNode):
-        cost_value = 2*(self.value-nextNode.value)
+        cost_value = 2*(self.value-nextNode.baseChange)
         value_rawValue = self.derivSigmoid(self.raw_value)
         rawValue_weigth = sum(self.values)
         #print(cost_value,value_rawValue,rawValue_weigth)
