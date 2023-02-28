@@ -16,30 +16,40 @@ class Node():
 
     def propagate(self):
         # gives values to the next layer
-        value = self.calcValue()
+        self.value = self.calcValue()
         if self.index[0]==3:
-            return value
+            return self.value
         for i in range(len(self.nextL)):
-            self.nextL[i].analyze(value*self.links[self.index[0]][self.index[1]][i])
+            self.nextL[i].analyze(self.value*self.links[self.index[0]][self.index[1]][i])
 
     def calcValue(self):
         # calculate value
-        return self.calcSigmoid(sum(self.values)+self.biases[self.index[0]][self.index[1]])
+        self.raw_value= sum(self.values)+self.biases[self.index[0]][self.index[1]]
+        return self.calcSigmoid(self.raw_value)
 
     def setLayers(self,layers):
         self.layers=layers
         if self.index[0] != 0:
             self.prevL=self.layers[self.index[0]-1]
-        if self.index[0] != 3:
-            self.nextL=self.layers[self.index[0]+1]
+        self.nextL=self.layers[self.index[0]+1]
 
     def learn(self,cost):
         changes=[]
-        for i in range(len(self.nextL)):
-            canges.append(self.calcChanges(self.nextL[i]))
-        self.baseChange=sum(changes)/len(changes)
+        for i in range(len(self.nextL)-1):
+            changes.append(self.calcChanges(self.nextL[i]))
+        self.baseChange=sum(i[0] for i in changes)/len(changes)
+        print(self.baseChange)
         # change bias and weight
         
 
     def calcChanges(self,nextNode):
-        pass
+        cost_value = 2*(self.value-nextNode.value)
+        value_rawValue = self.derivSigmoid(self.raw_value)
+        rawValue_weigth = sum(self.values)
+        #print(cost_value,value_rawValue,rawValue_weigth)
+        change = cost_value*value_rawValue
+        return change, rawValue_weigth
+
+    def derivSigmoid(self, raw_value):
+        sigmoid = self.calcSigmoid(raw_value)
+        return sigmoid*(1-sigmoid)

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import random, json
 from node import Node
+from dummy_node import DNode
 from dataImport import *
 # Main class
 class NN:
@@ -18,6 +19,7 @@ class NN:
         self.layers.append(self.generateNodes(16,1))
         self.layers.append(self.generateNodes(16,2))
         self.layers.append(self.generateNodes(10,3))
+        self.layers.append([])
         self.deliverLayers()
         self.data = openData()
         self.learn(next(self.data))
@@ -57,7 +59,7 @@ class NN:
             for data in row:
                 self.layers[0][i].analyze(data)
                 i+=1
-        for layer in self.layers:
+        for layer in self.layers[:len(self.layers)-1]:
             results = []
             for node in layer:
                 results.append(node.propagate())
@@ -73,7 +75,10 @@ class NN:
         # analyze an image and learn
         label, image = dataset
         res= self.analyze(image)
+        print(res)
         wres=self.getWantedResults(label)
+        self.layers[4]=list(wres)
+        self.deliverLayers()
         cost=self.getCost(res,wres)
         print(self.highestResult(res))
         print(cost)
@@ -91,15 +96,15 @@ class NN:
         # returns a list with everything being 0 except the label of the image
         wanted_results=[]
         for i in range(10):
-            wanted_results.append(0.0)
-        wanted_results[label-1]=1.0
+            wanted_results.append(DNode())
+        wanted_results[label-1].setValue(1.0)
         return wanted_results
 
     def getCost(self,res,wres):
         # calculate the cost of the network
         cost = 0.0
         for i in range(len(res)):
-            cost += pow(res[i]-wres[i],2)
+            cost += pow(res[i]-wres[i].value,2)
         return cost
     
     def save(self):
