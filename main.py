@@ -25,7 +25,7 @@ class NN:
         self.deliverLayers()
         self.data = openData()
         d=next(self.data)
-        for asd in range(10):
+        for asd in range(100):
             self.learn(d)
             self.save()
             self.load()
@@ -91,7 +91,7 @@ class NN:
         print(f'Cost: {cost}')
         for layer in list(reversed(self.layers)):
             for node in layer:
-                (self.links, self.biases)=node.learn(cost)
+                (self.links, self.biases)=node.learn(cost,self.links,self.biases)
 
     def highestResult(self,results:list):
         # return the index of the highest number in <results>
