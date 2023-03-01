@@ -54,7 +54,7 @@ class NN:
         for layer in layers:
             col = []
             for i in range(layer):
-                col.append(random.randint((-1),1))
+                col.append(0)#random.randint((-1),1))
             biases.append(col)
         return biases
 

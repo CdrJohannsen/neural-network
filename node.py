@@ -8,7 +8,7 @@ class Node():
         self.biases=biases
         self.links=links
         self.values=[]
-        self.lf=0.1
+        self.lf=1
         self.w_value=0.5
     
     def calcSigmoid(self,x):
@@ -20,7 +20,9 @@ class Node():
 
     def propagate(self):
         # gives values to the next layer
+        self.values_bu=list(self.values)
         self.value = self.calcValue()
+        self.values=[]
         if self.index[0]==3:
             return self.value
         for i in range(len(self.nextL)):
@@ -28,8 +30,8 @@ class Node():
 
     def calcValue(self):
         # calculate value
-        self.raw_value= sum(self.values)+self.biases[self.index[0]][self.index[1]]
-        self.values=[]
+        self.raw_value=0
+        self.raw_value= sum(self.values_bu)+self.biases[self.index[0]][self.index[1]]
         return self.calcSigmoid(self.raw_value)
 
     def setLayers(self,layers):
@@ -44,20 +46,24 @@ class Node():
         changes=[]
         for node in self.nextL:
             changes.append(self.calcChanges(node))
-        self.baseChange=sum(i[0] for i in changes)/len(changes)
-        self.biases[self.index[0]][self.index[1]]-=self.lf*self.baseChange
+            #print(changes[-1])
+        self.baseChange=sum(i[0] for i in changes)
+        #self.biases[self.index[0]][self.index[1]]-=self.lf*self.baseChange
         if self.index[0]==3:
             return (self.links, self.biases)
         for i in range(len(self.nextL)-1):
+            #print(self.lf*self.baseChange*changes[i-1][1])
             self.links[self.index[0]][self.index[1]][i-1]-=self.lf*self.baseChange*changes[i-1][1]
         # change bias and weight
+        self.w_value=self.calcValue()
+        self.values=[]
         return (self.links, self.biases)
         
 
     def calcChanges(self,nextNode):
-        cost_value = 2*(self.value-nextNode.value)
-        value_rawValue = self.derivSigmoid(self.raw_value)
-        rawValue_weigth = self.value
+        cost_value = 2*(nextNode.w_value-nextNode.value)
+        value_rawValue = self.derivSigmoid(nextNode.raw_value)
+        rawValue_weigth = self.raw_value
         #print(cost_value,value_rawValue,rawValue_weigth)
         change = cost_value*value_rawValue
         return change, rawValue_weigth
