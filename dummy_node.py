@@ -9,17 +9,12 @@ class DNode():
     def propagate(self):
         pass
 
-    def calcValue(self):
-        # calculate value
-        self.raw_value= sum(self.values)+self.biases[self.index[0]][self.index[1]]
-        return self.calcSigmoid(self.raw_value)
-
     def setLayers(self,layers):
         pass
 
     def learn(self,cost):
-        pass
+        return ([],[])
 
     def setValue(self,value):
         self.value=value
-        self.baseChange=value
+        #self.baseChange=value

@@ -1,6 +1,8 @@
 import math
 
 class Node():
+    biases=[]
+    links=[]
     def __init__(self,biases,index,links):
         self.index=index
         self.biases=biases
@@ -35,15 +37,16 @@ class Node():
 
     def learn(self,cost):
         changes=[]
-        for i in range(len(self.nextL)-1):
-            changes.append(self.calcChanges(self.nextL[i]))
+        for node in self.nextL:
+            changes.append(self.calcChanges(node))
         self.baseChange=sum(i[0] for i in changes)/len(changes)
-        self.biases[self.index[0]][self.index[1]]+=self.biases[self.index[0]][self.index[1]]*self.baseChange
+        self.biases[self.index[0]][self.index[1]]-=0.1*self.baseChange
         if self.index[0]==3:
-            return
+            return (self.links, self.biases)
         for i in range(len(self.nextL)-1):
-            self.links[self.index[0]][self.index[1]][i]+=self.links[self.index[0]][self.index[1]][i]*self.baseChange*changes[i][1]
+            self.links[self.index[0]][self.index[1]][i-1]-=0.1*self.baseChange*changes[i-1][1]
         # change bias and weight
+        return (self.links, self.biases)
         
 
     def calcChanges(self,nextNode):

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import random, json
+import random, json, sys
 from node import Node
 from dummy_node import DNode
 from dataImport import *
@@ -7,12 +7,14 @@ from dataImport import *
 class NN:
     def __init__(self):
         # generate links with random weigths
-        #self.links=[
-        #    self.generateLinks(784,16),
-        #    self.generateLinks(16,16),
-        #    self.generateLinks(16,10)]
-        #self.biases=self.generateBias((784,16,16,10))
-        self.load()
+        if len(sys.argv)>=2 and sys.argv[1]=='--reset':
+            self.links=[
+                self.generateLinks(784,16),
+                self.generateLinks(16,16),
+                self.generateLinks(16,10)]
+            self.biases=self.generateBias((784,16,16,10))
+        else:
+            self.load()
         # generate nodes
         self.layers=[]
         self.layers.append(self.generateNodes(784,0))
@@ -22,7 +24,11 @@ class NN:
         self.layers.append([])
         self.deliverLayers()
         self.data = openData()
-        self.learn(next(self.data))
+        d=next(self.data)
+        for asd in range(10):
+            self.learn(d)
+            self.save()
+            self.load()
         self.save()
 
     def generateNodes(self,count,index):
@@ -38,7 +44,7 @@ class NN:
         for a in range(inN):
             row = []
             for b in range(outN):   
-                row.append(random.random())
+                row.append(random.random()*random.choice((-1,1)))
             col.append(row)
         return col
 
@@ -48,7 +54,7 @@ class NN:
         for layer in layers:
             col = []
             for i in range(layer):
-                col.append(random.randint((-10),10))
+                col.append(random.randint((-1),1))
             biases.append(col)
         return biases
 
@@ -57,12 +63,13 @@ class NN:
         i=0
         for row in image:
             for data in row:
-                self.layers[0][i].analyze(data)
+                self.layers[0][i].analyze(data/255)
                 i+=1
         for layer in self.layers[:len(self.layers)-1]:
             results = []
             for node in layer:
                 results.append(node.propagate())
+        print(results)
         return results
 
     def deliverLayers(self):
@@ -79,18 +86,18 @@ class NN:
         self.layers[4]=list(wres)
         self.deliverLayers()
         cost=self.getCost(res,wres)
-        print(f'Label: {label}')
+        print(f'Wanted: {label}')
         print(f'Result: {self.highestResult(res)}')
         print(f'Cost: {cost}')
         for layer in list(reversed(self.layers)):
             for node in layer:
-                node.learn(cost)
+                (self.links, self.biases)=node.learn(cost)
 
     def highestResult(self,results:list):
         # return the index of the highest number in <results>
         a = list(results)
         a.sort()
-        return results.index(a[len(a)-1])
+        return results.index(a[-1])
 
     def getWantedResults(self,label):
         # returns a list with everything being 0 except the label of the image
@@ -123,5 +130,4 @@ class NN:
 
 
 if __name__ == "__main__":
-    for g in range(100):
-        net = NN()
+    net = NN()
