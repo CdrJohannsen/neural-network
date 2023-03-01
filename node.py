@@ -51,12 +51,11 @@ class Node():
         for i in range(len(self.nextL)-1):
             self.links[self.index[0]][self.index[1]][i-1]-=self.lf*self.baseChange*changes[i-1][1]
         # change bias and weight
-        self.w_value=self.calcValue()
         return (self.links, self.biases)
         
 
     def calcChanges(self,nextNode):
-        cost_value = 2*(self.value-nextNode.w_value)
+        cost_value = 2*(self.value-nextNode.value)
         value_rawValue = self.derivSigmoid(self.raw_value)
         rawValue_weigth = self.value
         #print(cost_value,value_rawValue,rawValue_weigth)
